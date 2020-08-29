@@ -67,9 +67,12 @@ func NewCache(options *CacheOptions) (CacheI, error) {
 	cache := &Cache{
 		options:    options,
 		bucketMast: uint32(options.BucketSize),
-		Limiter: &Limiter{
+	}
+
+	if cache.options.QpsMax > 0 || cache.options.MissedQpsMax > 0 {
+		cache.Limiter =  &Limiter{
 			options:       options,
-		},
+		}
 	}
 
 	var buckets []BucketI
@@ -96,14 +99,18 @@ func (cache *Cache) Add(key string, value interface{}, ttl time.Duration) bool {
 
 
 func (cache *Cache) Get(key string) (interface{}, bool, bool, bool) {
-	if cache.Limiter.Acquire() == false {
-		return nil, false, true, false
+	if cache.options.QpsMax > 0 || cache.options.MissedQpsMax > 0 {
+		if cache.Limiter.Acquire() == false {
+			return nil, false, true, false
+		}
 	}
 
 	bucketId := int(bucketHash(key)%uint64(cache.bucketMast))
 	value, ok, canAdd := cache.buckets[bucketId].Get(key)
 	if ok {
-		cache.Limiter.Hit()
+		if cache.options.QpsMax > 0 || cache.options.MissedQpsMax > 0 {
+			cache.Limiter.Hit()
+		}
 	}
 	return value, ok, false, canAdd
 }
