@@ -34,7 +34,7 @@ func main() {
 		paretoData = strings.Split(string(data), "\n")
 
 		for _, CacheSize := range []int{100, 1000, 2000, 10000} {
-			for _, minHit := range []int{1, 2, 3, 4, 5} {
+			for _, minHit := range []int{1, 2, 4, 8, 16, 32} {
 				for _, cacheType := range []string{
 					go_lru_cache.CacheTypeLru,
 					go_lru_cache.CacheTypeArc,
