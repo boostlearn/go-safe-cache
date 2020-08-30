@@ -24,7 +24,7 @@ type CacheMetric struct {
 }
 
 func main() {
-	var metrics []*CacheMetric
+	fmt.Println("alpha,cache_size,cache_type,k,get, add,hit")
 	for _, alpha := range []int{1, 2, 3, 4} {
 		data, err := ioutil.ReadFile(fmt.Sprintf(dataFile, alpha))
 		if err != nil {
@@ -94,18 +94,19 @@ func main() {
 						}
 					}
 
-					metrics = append(metrics, metricSingle, metricK)
+					for _, m := range []*CacheMetric{metricSingle, metricK} {
+						fmt.Printf("%v,%v,%v,%v,%v,%v,%v\n",
+							m.Alpha,
+							m.CacheSize,
+							m.CacheType,
+							m.K, m.Get,
+							m.Add,
+							m.Hit)
+					}
 				}
-
-
 
 			}
 		}
-	}
-
-	fmt.Println("alpha,cache_size,cache_type,k,get, add,hit")
-	for _, m := range metrics {
-		fmt.Printf("%v,%v,%v,%v,%v,%v,%v", m.Alpha, m.CacheSize, m.CacheType, m.K, m.Get, m.Add, m.Hit)
 	}
 }
 
