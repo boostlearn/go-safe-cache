@@ -29,7 +29,7 @@ type CacheOptions struct {
 
 type CacheI interface {
     Add(key string, value interface{}, ttl time.Duration) bool
-	Get(key string) (data interface{}, found bool, circuitBreaker bool, canAdd bool)
+	Get(key string) (data interface{}, found bool, canAdd bool)
     Remove(key string)
 }
 
@@ -98,21 +98,21 @@ func (cache *Cache) Add(key string, value interface{}, ttl time.Duration) bool {
 }
 
 
-func (cache *Cache) Get(key string) (interface{}, bool, bool, bool) {
-	if cache.options.QpsMax > 0 || cache.options.MissedQpsMax > 0 {
+func (cache *Cache) Get(key string) (interface{}, bool, bool) {
+	if cache.options.QpsMax > 0  {
 		if cache.Limiter.Acquire() == false {
-			return nil, false, true, false
+			return nil, false, false
 		}
 	}
 
 	bucketId := int(bucketHash(key)%uint64(cache.bucketMast))
 	value, ok, canAdd := cache.buckets[bucketId].Get(key)
 	if ok {
-		if cache.options.QpsMax > 0 || cache.options.MissedQpsMax > 0 {
+		if cache.options.QpsMax > 0 {
 			cache.Limiter.Hit()
 		}
 	}
-	return value, ok, false, canAdd
+	return value, ok, canAdd
 }
 
 func (cache *Cache) Remove(key string) {

@@ -53,10 +53,10 @@ func (limiter *Limiter) Acquire() bool {
 		return false
 	}
 
-	if limiter.options.MissedQpsMax > 0 &&
-		limiter.requestRecorder[limiter.recordIdx] - limiter.hitRecorder[limiter.recordIdx] > limiter.options.MissedQpsMax {
-		return false
-	}
+	//if limiter.options.MissedQpsMax > 0 &&
+	//	limiter.requestRecorder[limiter.recordIdx] - limiter.hitRecorder[limiter.recordIdx] > limiter.options.MissedQpsMax {
+	//	return false
+	//}
 
 	return true
 }
