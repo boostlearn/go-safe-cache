@@ -213,7 +213,7 @@ func BenchmarkBucketArc_Single(b *testing.B) {
 	addCounter := 0
 	for i := 0; i < b.N; i++ {
 		d := paretoData[rand.Intn(len(paretoData))]
-		_, found, _, canAdd := cache.Get(d)
+		_, found, canAdd := cache.Get(d)
 		getCounter += 1
 		if found {
 			hitCounter += 1
@@ -252,7 +252,7 @@ func BenchmarkBucketArc_K(b *testing.B) {
 	addCounter := 0
 	for i := 0; i < b.N; i++ {
 		d := paretoData[rand.Intn(len(paretoData))]
-		_, found, _, canAdd := cache.Get(d)
+		_, found, canAdd := cache.Get(d)
 		getCounter += 1
 		if found {
 			hitCounter += 1

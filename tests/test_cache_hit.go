@@ -25,7 +25,7 @@ type CacheMetric struct {
 
 func main() {
 	fmt.Println("alpha,cache_size,cache_type,k,get, add,hit")
-	for _, alpha := range []int{4} {
+	for _, alpha := range []int{1} {
 		data, err := ioutil.ReadFile(fmt.Sprintf(dataFile, alpha))
 		if err != nil {
 			log.Fatal("openfile error:", dataFile)
