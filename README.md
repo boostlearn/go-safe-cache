@@ -65,4 +65,12 @@
 更新流程
 ![avatar](https://github.com/boostlearn/go-safe-cache/raw/master/doc/safe_cache_insert.png)
 
+## BenchMark
+    BenchmarkBucketLru_Single-4      1000000              1268 ns/op             140 B/op          4 allocs/op
+    BenchmarkBucketLru_K-4           1000000              1257 ns/op             118 B/op          3 allocs/op
+    BenchmarkBucket2Q_Single-4       1000000              1971 ns/op             166 B/op          4 allocs/op
+    BenchmarkBucket2Q_K-4            1000000              1624 ns/op             112 B/op          3 allocs/op
+    BenchmarkBucketArc_Single-4      1000000              2028 ns/op             167 B/op          4 allocs/op
+    BenchmarkBucketArc_K-4           1000000              1692 ns/op             113 B/op          3 allocs/op
+
 ## 示例
