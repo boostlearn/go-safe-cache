@@ -11,7 +11,7 @@ import (
 )
 
 var paretoData []string
-var dataFile = "tests/pareto_data/pareto_%v.data"
+var dataFile = "pareto_data/pareto_%v.data"
 
 type CacheMetric struct {
 	Alpha int
@@ -25,7 +25,7 @@ type CacheMetric struct {
 
 func main() {
 	fmt.Println("alpha,cache_size,cache_type,k,get, add,hit")
-	for _, alpha := range []int{1, 2, 3, 4} {
+	for _, alpha := range []int{1} {
 		data, err := ioutil.ReadFile(fmt.Sprintf(dataFile, alpha))
 		if err != nil {
 			log.Fatal("openfile error:", dataFile)
@@ -33,8 +33,8 @@ func main() {
 
 		paretoData = strings.Split(string(data), "\n")
 
-		for _, CacheSize := range []int{100, 1000, 2000, 10000} {
-			for _, minHit := range []int{1, 2, 4, 8, 16, 32} {
+		for _, CacheSize := range []int{100, 500, 1000, 2000} {
+			for _, minHit := range []int{1, 2, 4, 8, 16} {
 				for _, cacheType := range []string{
 					go_lru_cache.CacheTypeLru,
 					go_lru_cache.CacheTypeArc,
@@ -71,7 +71,7 @@ func main() {
 						CacheSize: int64(CacheSize),
 					}
 
-					for i := 0; i < 1000000; i++ {
+					for i := 0; i < 10000000; i++ {
 						d := paretoData[rand.Intn(len(paretoData))]
 						_, found, canAdd := cacheSingle.Get(d)
 						metricSingle.Get += 1
