@@ -1,21 +1,21 @@
-## 算法
 >本项目对数据主键符合帕累托分布(二八原则)的Cache缓存进行优化。
 
-设计两个LRU队列，一个用来管理数据的存储，一个用来统计主键的热度变化。
+为优化对热点数据的缓存，本项目设计了两个LRU队列，一个LRU存储了数据，另一个统计数据键的热度变化。
 
 ![avatar](https://github.com/boostlearn/go-safe-cache/raw/master/doc/safe_cache.png)
 
-访问时，先查询存储LRU，查到数据则直接返回，没查到则更新主键的热度统计。
-
-![avatar](https://github.com/boostlearn/go-safe-cache/raw/master/doc/safe_cache_query.png)
-
-更新时，先查询存储LRU，查到则更新数据，没查到则查询主键热度，如果热度符合，则新插入数据。
-
-![avatar](https://github.com/boostlearn/go-safe-cache/raw/master/doc/safe_cache_insert.png)
 
 ## 结果
+本次测试，帕累托分布数据生成方法：
 
-### 缓存100个KEY时命中率
+    import numpy as np
+    np.random.pareto(4, 1000000))*10000 + 1
+ 
+数据分布如下：
+ ![avatar](https://github.com/boostlearn/go-safe-cache/raw/master/doc/pareto_4.png)
+ 
+测试结果：
+### 缓存大小100时，KEY命中率
 |最小热度K值|LRU算法|2Q算法|ARC算法|
 |:----|----:|----:|----:|
 |0|0.8959815|0.8899972|0.9080057|
@@ -24,7 +24,8 @@
 |4|	0.918635|	0.8899214|	0.9170311|
 |8|0.9227886|	0.9190385|	0.9192692|
 
-### 缓存500个KEY时命中率
+### 缓存大小500时，KEY命中率
+
 |最小热度K值|LRU算法|2Q算法|ARC算法|
 |:----|----:|----:|----:|
 |0|	0.3960788|	0.4558791|	0.4760088|
@@ -35,7 +36,8 @@
 |16|		|0.5664294|	0.5685396|
 
 
-### 缓存1000个KEY时命中率
+### 缓存大小1000时，KEY命中率
+
 |最小热度K值|LRU算法|2Q算法|ARC算法|
 |:----|----:|----:|----:|
 |0|	0.7231351|	0.693408|	0.7209555|
@@ -46,7 +48,8 @@
 |16|	-|	0.7813305|	0.7814856|
 
 
-### 缓存2000个KEY时命中率
+###缓存大小2000时，KEY命中率
+
 |最小热度K值|LRU算法|2Q算法|ARC算法|
 |:----|----:|----:|----:|
 |0|	0.8959815|	0.8899972|	0.9080057|
@@ -55,4 +58,11 @@
 |4|	0.918635|	0.8899214|	0.9170311|
 |8|	0.9227886|	0.9190385|	0.9192692|
 
-# 示例
+## 示例
+
+## 算法流程
+访问流程：
+![avatar](https://github.com/boostlearn/go-safe-cache/raw/master/doc/safe_cache_query.png)
+
+更新流程
+![avatar](https://github.com/boostlearn/go-safe-cache/raw/master/doc/safe_cache_insert.png)
