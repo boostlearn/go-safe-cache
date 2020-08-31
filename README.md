@@ -60,10 +60,12 @@
 
 
 ## 算法流程
-访问流程：
+数据查询流程：
+
 ![avatar](https://github.com/boostlearn/go-safe-cache/raw/master/doc/safe_cache_query.png)
 
-更新流程
+数据更新流程:
+
 ![avatar](https://github.com/boostlearn/go-safe-cache/raw/master/doc/safe_cache_insert.png)
 
 ## BenchMark
