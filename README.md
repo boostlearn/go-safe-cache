@@ -1,12 +1,11 @@
 ## 简介
->本项目对数据主键符合帕累托分布(二八原则)的Cache缓存进行优化。
-为优化对热点数据的缓存，本项目设计了两个LRU队列，一个LRU存储了数据，另一个统计数据键的热度变化。
+为优化对热点数据的缓存，本项目设计两个LRU队列，一个LRU队列存储数据，另一个LRU队列统计数据键热度变化。
 
 ![avatar](https://github.com/boostlearn/go-safe-cache/raw/master/doc/safe_cache.png)
 
 
 ## 测试
-本次测试，帕累托分布数据生成方法：
+本次测试，针对符合帕累托分布(二八原则)数据进行，生成方法如下：
 
     import numpy as np
     np.random.pareto(4, 1000000))*10000 + 1
